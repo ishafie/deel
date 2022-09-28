@@ -3,6 +3,12 @@
 # INTERVIEWEE NOTE
 Hello ! Sadly I haven't managed to do everything I wanted, swapping the project from Javascript to Typescript took me some time and I did a lot of restructuring.
 
+I made another branch after taking a break with the finished exercices, you can pull it if you want:
+
+`git checkout -b finishedProject`
+
+`git pull origin finishedProject`
+
 I would have liked to implement a few more things like unit tests through mocha, a frontend, and also common-models (basically making models into a npm dependency so that you can install models on both the frontend and backend, this is useful when the backend & the frontend share the same objects, although obviously I wouldn't put the current Sequelize ORM models into the common models.)
 
 I would've used micro-services aswell, to separate the modules from each other, especially one for the database which should ALWAYS run on its own.
