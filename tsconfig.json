@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "outDir": "dist/",
+    "target": "es6",
+    "preserveConstEnums": true,
+    "moduleResolution":"node"
+  },
+  "lib": ["ES2021", "DOM"],
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts"],  
+}
