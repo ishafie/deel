@@ -7,15 +7,17 @@ I would have liked to implement a few more things like unit tests through mocha,
 
 I would've used micro-services aswell, to separate the modules from each other, especially one for the database which should ALWAYS run on its own.
 
-Since I had to speed up the pace I couldnt make some verifications on paymentStatuses after POST requests but I would have if I had the time.
+Since I had to speed up the pace I couldnt make some verifications on paymentStatuses after POST requests but I would have if I had the time. I would also have put some error catchers in case the DB wasn't set up properly.
+
+Also I realized I put the dates in french format DD-MM-YYYY instead of MM-DD-YYYY, for the last exercises, sorry for that.
 
 The postman for the requests : 
 https://www.getpostman.com/collections/da01fca88622282af66d
 
-Also I used Node v14 for the exercise, but you can use any higher version.
+I used Node v14 for the exercise, but you can use any higher version.
 
 
-I took 3 hours and 25minutes for the home task and I hope not finishing the last exercise won't be too great of an issue.
+I took 3 hours and 25minutes for the home task and I hope not finishing the last exercises won't be too great of an issue.
 
 Thanks a lot for taking the time to consider my application, I wish you a great day/night !
   
