@@ -1,4 +1,5 @@
-import { Transaction } from "sequelize";
+import { Op, Transaction } from "sequelize";
+import Contract from "../../models/contract.model";
 import Job from "../../models/job.model";
 import Profile from "../../models/profile.model";
 
@@ -10,43 +11,58 @@ export class ProfileRepository {
 
     public async getBestProfession(start: moment.Moment, end: moment.Moment) {
         try {
-            // I'm really sorry I failed to finish the task in time
-            // Changing from javascript to typescript took me more time than I thought
-            // So I made this query without using Sequelize to go faster, if I had more time I would've made it fully with Sequelize ORM.
-            const [results, metadata] = await global.sequelize.query(`\
-                SELECT sum(Jobs.price) as total, Profiles.profession  as profileId FROM Profiles \
-                INNER JOIN Contracts ON Profiles.id = Contracts.ContractorId \
-                INNER JOIN Jobs ON Contracts.id = Jobs.ContractId \
-                WHERE \ 
-                Jobs.paymentDate >= '${start.format('YYYY-MM-DD')}' AND \
-                Jobs.paymentDate <= '${end.format('YYYY-MM-DD')}' AND \
-                Jobs.paid = true \
-                GROUP BY profileId \
-                ORDER BY total DESC \
-                LIMIT 1; \
-            `);
-            return results;
+            return (await Profile.findAll({
+                attributes: ['profession', [global.sequelize.fn('sum', global.sequelize.col('price')), 'paid']],
+                group: ['profession'],
+                order: [['paid', 'DESC']],
+                include: [{
+                    model: Contract,
+                    as: 'contractorContracts',
+                    attributes: [],
+                    required: true,
+                    include: [{
+                        model: Job,
+                        attributes: [],
+                        where: {
+                            paymentDate: {
+                                [Op.between]: [start.format('YYYY-MM-DD') + ' 00:00:00', end.format('YYYY-MM-DD') + ' 23:59:59']
+                            },
+                            paid: true
+                        }
+                    }],
+                }],
+            })).shift();
         } catch (error) {
-            return [];
+            console.log(error);
+            throw error;
         }
     }
 
     public async getBestClients(start: moment.Moment, end: moment.Moment, limit: number) {
         try {
-            const [results, metadata] = await global.sequelize.query(`\
-                SELECT sum(Jobs.price) as paid, Profiles.firstName || ' ' || Profiles.lastName as fullName FROM Profiles \
-                INNER JOIN Contracts ON Profiles.id = Contracts.ContractorId \
-                INNER JOIN Jobs ON Contracts.id = Jobs.ContractId \
-                WHERE \ 
-                Jobs.paymentDate >= '${start.format('YYYY-MM-DD')}' AND \
-                Jobs.paymentDate <= '${end.format('YYYY-MM-DD')}' AND \
-                Jobs.paid = true \
-                GROUP BY fullName \
-                ORDER BY paid DESC \
-                LIMIT ${limit}; \
-            `);
-            return results;
+            return (await Profile.findAll({
+                attributes: [['id', 'profileId'], [global.sequelize.literal("firstName || ' ' || lastName"), 'fullName'], [global.sequelize.fn('sum', global.sequelize.col('price')), 'paid']],
+                group: ['profileId', 'fullName'],
+                order: [['paid', 'DESC']],
+                include: [{
+                    model: Contract,
+                    as: 'clientContracts',
+                    attributes: [],
+                    required: true,
+                    include: [{
+                        model: Job,
+                        attributes: [],
+                        where: {
+                            paymentDate: {
+                                [Op.between]: [start.format('YYYY-MM-DD') + ' 00:00:00', end.format('YYYY-MM-DD') + ' 23:59:59']
+                            },
+                            paid: true
+                        }
+                    }],
+                }],
+            })).splice(0, limit);
         } catch (error) {
+            console.log(error);
             return [];
         }
     }
