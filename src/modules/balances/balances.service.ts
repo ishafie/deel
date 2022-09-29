@@ -1,11 +1,13 @@
-import { injectable } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 import Profile from "../../models/profile.model";
 import { ResponseManagement } from "../../models/response-management";
-import { ProfileService } from "../profile/profile.service";
+import { IProfileService } from "../profile/profile.interface";
+import { IBalancesService } from "./balances.interface";
 @injectable()
-export class BalancesService {
-    constructor(private readonly profileService: ProfileService) {
-    }
+export class BalancesService implements IBalancesService {
+    constructor(
+        @inject('IProfileService') private readonly profileService: IProfileService
+    ) {}
 
     public async depositMoneyToUser(depositor: Profile, receiver: Profile, amount: number): Promise<ResponseManagement> {
         if (amount > depositor.balance) {

@@ -1,13 +1,15 @@
 import * as moment from 'moment';
 import Profile from "../../models/profile.model";
-import { injectable } from "tsyringe";
+import { delay, inject, injectable, registry } from "tsyringe";
 import { IAdminService } from "./admin.interface";
 import { IProfileService } from "../profile/profile.interface";
 import { ProfileService } from '../profile/profile.service';
 @injectable()
 export class AdminService implements IAdminService {
-    constructor(private readonly profileService: ProfileService) {
-    }
+
+    constructor(
+      @inject('IProfileService') private readonly profileService: IProfileService
+   ) {}
 
     public async getBestProfession(start: moment.Moment, end: moment.Moment): Promise<Profile> {
       try {

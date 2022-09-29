@@ -3,9 +3,8 @@ import Contract from '../src/models/contract.model';
 import Job from '../src/models/job.model';
 import * as DatabaseInit from '../src/database/init';
 /* WARNING THIS WILL DROP THE CURRENT DATABASE */
-seed();
 
-async function seed() {
+export async function seed() {
   DatabaseInit.initDatabase();
   // create tables
   await Profile.sync({ force: true });

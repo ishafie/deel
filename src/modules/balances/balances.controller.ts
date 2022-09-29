@@ -1,17 +1,25 @@
 import { Response, NextFunction, Request } from "express";
-import { injectable } from "tsyringe";
+import { delay, inject, injectable, registry } from "tsyringe";
 import Profile from "../../models/profile.model";
 import { ResponseManagement } from "../../models/response-management";
-import { JobService } from "../jobs/jobs.service";
+import { IProfileService } from "../profile/profile.interface";
 import { ProfileService } from "../profile/profile.service";
+import { IBalancesService } from "./balances.interface";
 import { BalancesService } from "./balances.service";
 
 @injectable()
+@registry([
+    {token: 'IProfileService', useToken: delay(() => ProfileService)},
+    {token: 'IBalancesService', useToken: delay(() => BalancesService)}
+]) 
 export class BalancesController {
-    constructor(private readonly profileService: ProfileService, 
-        private readonly balancesService: BalancesService) {}
 
-    public async depositMoneyToUser(req: Request, res: Response, next: NextFunction): Promise<any> {
+    constructor(
+        @inject('IBalancesService') private readonly balancesService: IBalancesService,
+        @inject('IProfileService') private readonly profileService: IProfileService
+    ) {}
+
+    public async depositMoneyToUser(req: Request, res: Response, next: NextFunction): Promise<ResponseManagement> {
         try {
             const userId: number = !isNaN(req.params.userId) ? Number.parseInt(req.params.userId) : null;
             const profile_id: number = !isNaN(req.query.profile_id) ? Number.parseInt(req.query.profile_id) : null;

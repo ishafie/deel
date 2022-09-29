@@ -15,6 +15,27 @@ I used Node v14 for the exercise, but you can use any higher version.
 
 Thanks a lot for taking the time to consider my application, I wish you a great day/night !
 
+# DOCUMENTATION AND IMPLEMENTATION CHOICES
+
+- Using typescript
+It took me a long time to adapt the whole project to typescript, many things were to be taken into consideration but now the code is way clearer, maintainable and reusable.
+
+I still think I have too much boilerplate code but I know I could've avoided that by using other frameworks like Nestjs and taking more time to improve some parts of the code.
+
+- Dependency injection
+This was quite a hassle as I'm used to Angular or Nestjs DI, using tsyringe was a challenge to be implemented in such a short time.
+
+- Routing
+I would've prefered to make an automatic route importer but I was running low on time so I had to manually import routes into the src/config/routes.ts file.
+
+- Mocks & interfaces
+My initial plan was to implement interfaces to be able to use them for repository mocking specifically, for example putting local data in MockProfileRepository to test my services, but I ended up making a mock database instead so I would not spend too long on making these tests.
+
+- Tests
+I used mocha & chai, I preferred not to use jest because I really think it's way too heavy. Installing sqlite3 makes the project like 20mb already and I didn't want to make it even heavier with jest.
+
+My tests are far from complete, they only take into account the successful operations and they do not test errors, I would've made all possible scenarios into tests if I had the time to do so.
+
 💫 Welcome! 🎉
 
 

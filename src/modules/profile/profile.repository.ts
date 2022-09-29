@@ -12,7 +12,7 @@ export class ProfileRepository implements IProfileRepository {
         return await Profile.findOne({where: {id: profile_id}});
     }
 
-    public async getBestProfession(start: moment.Moment, end: moment.Moment) {
+    public async getBestProfession(start: moment.Moment, end: moment.Moment): Promise<Profile> {
         try {
             return (await Profile.findAll({
                 attributes: ['profession', [global.sequelize.fn('sum', global.sequelize.col('price')), 'paid']],

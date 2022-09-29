@@ -3,8 +3,9 @@ import { injectable } from "tsyringe";
 import Contract, { ContractEnum } from "../../models/contract.model";
 import Job from "../../models/job.model";
 import Profile from "../../models/profile.model";
+import { IJobsRepository } from "./jobs.interface";
 @injectable()
-export class JobRepository {
+export class JobRepository implements IJobsRepository {
     
     public async getJobById(job_id: number) {
         return await Job.findOne({where: {id: job_id}});

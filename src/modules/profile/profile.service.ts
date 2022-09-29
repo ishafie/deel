@@ -1,16 +1,17 @@
 import Job from "../../models/job.model";
 import Profile from "../../models/profile.model";
 import { ResponseManagement } from "../../models/response-management";
-import { JobService } from "../jobs/jobs.service";
 import * as moment from 'moment';
-import { injectable } from "tsyringe";
-import { ProfileRepository } from "./profile.repository";
-import { IProfileService } from "./profile.interface";
+import { inject, injectable } from "tsyringe";
+import { IProfileRepository, IProfileService } from "./profile.interface";
+import { IJobsService } from "../jobs/jobs.interface";
 
 @injectable()
 export class ProfileService implements IProfileService {
 
-    constructor(private readonly profileRepository: ProfileRepository, private readonly jobService: JobService) {
+    constructor(
+        @inject('IProfileRepository') private readonly profileRepository: IProfileRepository, 
+        @inject('IJobsService') private readonly jobService: IJobsService) {
     }
 
     public async getProfileById(profile_id: number) {

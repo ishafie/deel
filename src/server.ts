@@ -11,7 +11,7 @@ class Service {
     public async init() {
         try {
             this.app = express();
-            global.sequelize = DatabaseInit.initDatabase();
+            DatabaseInit.initDatabase();
             this.app.listen(config.httpServer?.port, () => {
                 console.log(`Express App Listening on Port ${config.httpServer?.port}.`)
             });

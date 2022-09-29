@@ -1,13 +1,22 @@
 import { Response, NextFunction, Request } from "express";
-import { injectable } from "tsyringe";
+import { delay, inject, injectable, registry } from "tsyringe";
 import Profile from "../../models/profile.model";
+import { JobService } from "../jobs/jobs.service";
 import { IProfileService } from "./profile.interface";
+import { ProfileRepository } from "./profile.repository";
 import { ProfileService } from "./profile.service";
 
 @injectable()
+@registry([
+    {token: 'IProfileService', useToken: delay(() => ProfileService)},
+    {token: 'IProfileRepository', useToken: delay(() => ProfileRepository)},
+    {token: 'IJobsService', useToken: delay(() => JobService)}
+])
 export class ProfileController {
     
-    constructor(private readonly profileService: ProfileService) {}
+    constructor(
+        @inject('IProfileService') private readonly profileService: IProfileService
+    ) {}
 
     public async getProfileById(req: Request, res: Response, next: NextFunction): Promise<any> {
         try {
@@ -21,6 +30,7 @@ export class ProfileController {
             }
             return res.send(profile);
         } catch (err: any) {
+            console.log(err);
             res.status(500).send({errors: [{message: "An unexpected error occured at ProfileController.getProfileById", detail: err }]})
             next(err);
         }

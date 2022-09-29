@@ -1,9 +1,10 @@
-import { injectable } from "tsyringe";
-import { ContractRepository } from "./contracts.repository";
+import { inject, injectable } from "tsyringe";
+import { IContractRepository, IContractService } from "./contracts.interface";
 @injectable()
-export class ContractService {
+export class ContractService implements IContractService {
 
-    constructor(private readonly contractRepository: ContractRepository) {
+    constructor(
+        @inject('IContractRepository') private readonly contractRepository: IContractRepository) {
     }
 
     public async getContractById(contract_id: number) {

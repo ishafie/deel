@@ -1,12 +1,25 @@
 import { Response, NextFunction, Request } from "express";
-import { injectable } from "tsyringe";
+import { delay, inject, injectable, registry } from "tsyringe";
 import Contract from "../../models/contract.model";
 import Profile from "../../models/profile.model";
+import { IProfileService } from "../profile/profile.interface";
 import { ProfileService } from "../profile/profile.service";
+import { IContractService } from "./contracts.interface";
+import { ContractRepository } from "./contracts.repository";
 import { ContractService } from "./contracts.service";
 @injectable()
+@registry([
+    {token: 'IContractService', useToken: delay(() => ContractService)},
+    {token: 'IProfileService', useToken: delay(() => ProfileService)},
+    {token: 'IContractRepository', useToken: delay(() => ContractRepository)},
+]) 
 export class ContractsController {
-    constructor (private readonly profileService: ProfileService, private readonly contractService: ContractService) {}
+
+    constructor (
+        @inject('IProfileService') private readonly profileService: IProfileService, 
+        @inject('IContractService') private readonly contractService: IContractService
+    ) {}
+
     public async getContractById(req: Request, res: Response, next: NextFunction): Promise<Contract> {
         try {
             const contract_id: number = !isNaN(req.params.id) ? Number.parseInt(req.params.id) : null;

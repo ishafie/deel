@@ -1,9 +1,10 @@
 import { Op } from "sequelize";
 import { injectable } from "tsyringe";
 import Contract, { ContractEnum } from "../../models/contract.model";
+import { IContractRepository } from "./contracts.interface";
 
 @injectable()
-export class ContractRepository {
+export class ContractRepository implements IContractRepository {
     
     public async getContractById(contract_id: number) {
         return await Contract.findOne({where: {id: contract_id}});

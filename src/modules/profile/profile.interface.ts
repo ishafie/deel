@@ -15,7 +15,7 @@ export interface IProfileRepository {
 export interface IProfileService {
     getProfileById(profile_id: number);
     pay(payor: Profile, receiver: Profile, job: Job);
-    deposit(payor: Profile, receiver: Profile, amount: number, jobService: JobService): Promise<ResponseManagement>;
+    deposit(payor: Profile, receiver: Profile, amount: number): Promise<ResponseManagement>;
     getBestProfession(start: moment.Moment, end: moment.Moment): Promise<Profile> 
     getBestClients(start: moment.Moment, end: moment.Moment, limit: number);
 }
