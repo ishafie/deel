@@ -1,15 +1,16 @@
+import { container } from "tsyringe";
 import { AdminController } from "./admin.controller";
 
-const adminController = new AdminController();
+const adminInstance = container.resolve(AdminController);
 export const adminRoute = [
     {
         url: '/admin/best-profession',
         method: 'get',
-        handler: adminController.getBestProfession
+        handler: adminInstance.getBestProfession.bind(adminInstance)
     },
     {
         url: '/admin/best-clients',
         method: 'get',
-        handler: adminController.getBestClients
+        handler: adminInstance.getBestClients.bind(adminInstance)
     }
 ];

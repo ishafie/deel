@@ -1,15 +1,16 @@
 import Job from "../../models/job.model";
 import Profile from "../../models/profile.model";
 import { ResponseManagement } from "../../models/response-management";
-import { JobService } from "../jobs/job.service";
-import { ProfileRepository } from "./profile.repository";
+import { JobService } from "../jobs/jobs.service";
 import * as moment from 'moment';
+import { injectable } from "tsyringe";
+import { ProfileRepository } from "./profile.repository";
+import { IProfileService } from "./profile.interface";
 
-export class ProfileService {
-    private profileRepository: ProfileRepository;
+@injectable()
+export class ProfileService implements IProfileService {
 
-    constructor() {
-        this.profileRepository = new ProfileRepository();
+    constructor(private readonly profileRepository: ProfileRepository, private readonly jobService: JobService) {
     }
 
     public async getProfileById(profile_id: number) {
@@ -20,9 +21,9 @@ export class ProfileService {
         return await this.profileRepository.payBetweenUsers(payor, receiver, job);
     }
 
-    public async deposit(payor: Profile, receiver: Profile, amount: number, jobService: JobService): Promise<ResponseManagement> {
+    public async deposit(payor: Profile, receiver: Profile, amount: number): Promise<ResponseManagement> {
         try {
-            const isBelowRequirement = await jobService.checkIfAmountBelowRequirement(payor, amount);
+            const isBelowRequirement = await this.jobService.checkIfAmountBelowRequirement(payor, amount);
             if (isBelowRequirement) {
                 const paymentStatus = await this.profileRepository.payBetweenUsersSpecificAmount(payor, receiver, amount);
                 return {success: true, statusCode: 200, message: `You successfully deposited ${amount}$ to ${receiver.firstName} ${receiver.lastName}`};

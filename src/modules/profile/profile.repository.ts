@@ -1,9 +1,12 @@
 import { Op, Transaction } from "sequelize";
+import { injectable } from "tsyringe";
 import Contract from "../../models/contract.model";
 import Job from "../../models/job.model";
 import Profile from "../../models/profile.model";
+import { IProfileRepository } from "./profile.interface";
 
-export class ProfileRepository {
+@injectable()
+export class ProfileRepository implements IProfileRepository {
     
     public async getProfileById(profile_id: number) {
         return await Profile.findOne({where: {id: profile_id}});

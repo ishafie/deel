@@ -1,9 +1,11 @@
 import { Response, NextFunction, Request } from "express";
-import { ProfileService } from "../profile/profile.service";
 import * as moment from 'moment';
 import { AdminService } from "./admin.service";
+import { injectable } from "tsyringe";
 
+@injectable()
 export class AdminController {
+    constructor(private readonly adminService: AdminService) {}
 
     public async getBestProfession(req: Request, res: Response, next: NextFunction): Promise<any> {
         try {
@@ -12,9 +14,7 @@ export class AdminController {
             if (start === null || end === null || !start.isValid() || !end.isValid() || start.isAfter(end)) {
                 return res.status(400).end();
             }
-            const adminService = new AdminService();
-            const profileService: ProfileService = new ProfileService();
-            const bestProfession: any = await adminService.getBestProfession(start, end, profileService);
+            const bestProfession: any = await this.adminService.getBestProfession(start, end);
             return res.send({bestProfession});
         } catch (err: any) {
             res.status(500).send({errors: [{message: "An unexpected error occured at AdminController.getBestProfession", detail: err }]})
@@ -30,9 +30,7 @@ export class AdminController {
             if (!limit || limit <= 0 || start === null || end === null || !start.isValid() || !end.isValid() || start.isAfter(end)) {
                 return res.status(400).end();
             }
-            const adminService = new AdminService();
-            const profileService: ProfileService = new ProfileService();
-            const bestClients: any = await adminService.getBestClients(start, end, limit, profileService);
+            const bestClients: any = await this.adminService.getBestClients(start, end, limit);
             return res.send({bestClients});
         } catch (err: any) {
             res.status(500).send({errors: [{message: "An unexpected error occured at AdminController.getBestClients", detail: err }]})

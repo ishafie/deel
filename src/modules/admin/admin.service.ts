@@ -1,22 +1,25 @@
-import { ProfileService } from "../profile/profile.service";
 import * as moment from 'moment';
 import Profile from "../../models/profile.model";
-
-export class AdminService {
-    constructor() {
+import { injectable } from "tsyringe";
+import { IAdminService } from "./admin.interface";
+import { IProfileService } from "../profile/profile.interface";
+import { ProfileService } from '../profile/profile.service';
+@injectable()
+export class AdminService implements IAdminService {
+    constructor(private readonly profileService: ProfileService) {
     }
 
-    public async getBestProfession(start: moment.Moment, end: moment.Moment, profileService: ProfileService): Promise<Profile> {
+    public async getBestProfession(start: moment.Moment, end: moment.Moment): Promise<Profile> {
       try {
-         return await profileService.getBestProfession(start, end);
+         return await this.profileService.getBestProfession(start, end);
       } catch (error: any) {
          throw error;
       }
     }
 
-    public async getBestClients(start: moment.Moment, end: moment.Moment, limit: number, profileService: ProfileService): Promise<Profile[]> {
+    public async getBestClients(start: moment.Moment, end: moment.Moment, limit: number): Promise<Profile[]> {
       try {
-        return await profileService.getBestClients(start, end, limit);
+        return await this.profileService.getBestClients(start, end, limit);
       }
       catch (error:any) {
          throw error;

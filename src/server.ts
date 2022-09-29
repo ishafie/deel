@@ -2,6 +2,7 @@ import { config } from './config/config';
 import * as express from 'express';
 import * as DatabaseInit from './database/init';
 import { DeelRoutes } from './config/routes';
+import "reflect-metadata";
 
 class Service {
     public app: express.Application;

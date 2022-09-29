@@ -3,32 +3,17 @@
 # INTERVIEWEE NOTE
 Hello ! Sadly I haven't managed to do everything I wanted, swapping the project from Javascript to Typescript took me some time and I did a lot of restructuring.
 
-I made another branch after taking a break with the finished exercices, you can pull it if you want:
-
-`git checkout -b finishedProject`
-
-`git pull origin finishedProject`
-
-The main branch contains all the code that I managed to do on time.
 
 I would have liked to implement a few more things like unit tests through mocha, a frontend, and also common-models (basically making models into a npm dependency so that you can install models on both the frontend and backend, this is useful when the backend & the frontend share the same objects, although obviously I wouldn't put the current Sequelize ORM models into the common models.)
 
 I would've used micro-services aswell, to separate the modules from each other, especially one for the database which should ALWAYS run on its own.
-
-Since I had to speed up the pace I couldnt make some verifications on paymentStatuses after POST requests but I would have if I had the time. I would also have put some error catchers in case the DB wasn't set up properly.
-
-Also I realized I put the dates in french format DD-MM-YYYY instead of MM-DD-YYYY, for the last exercises, sorry for that.
 
 The postman for the requests : 
 https://www.getpostman.com/collections/da01fca88622282af66d
 
 I used Node v14 for the exercise, but you can use any higher version.
 
-
-I took 3 hours and 25minutes for the home task and I hope not finishing the last exercises won't be too great of an issue.
-
 Thanks a lot for taking the time to consider my application, I wish you a great day/night !
-  
 
 💫 Welcome! 🎉
 

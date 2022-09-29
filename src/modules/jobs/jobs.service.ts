@@ -1,13 +1,13 @@
+import { injectable } from "tsyringe";
 import Job from "../../models/job.model";
 import Profile from "../../models/profile.model";
 import { ResponseManagement } from "../../models/response-management";
 import { ProfileService } from "../profile/profile.service";
 import { JobRepository } from "./jobs.repository";
 
+@injectable()
 export class JobService {
-    private jobRepository: JobRepository;
-    constructor() {
-        this.jobRepository = new JobRepository();
+    constructor(private readonly jobRepository: JobRepository) {
     }
 
     public async getJobById(job_id: number): Promise<Job> {

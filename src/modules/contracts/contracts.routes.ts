@@ -1,15 +1,16 @@
+import { container } from "tsyringe";
 import { ContractsController } from "./contracts.controller";
 
-const contractController = new ContractsController();
+const contractInstance = container.resolve(ContractsController);
 export const contractsRoute = [
     {
         url: '/contracts/:id',
         method: 'get',
-        handler: contractController.getContractById
+        handler: contractInstance.getContractById.bind(contractInstance)
     },
     {
         url: '/contracts',
         method: 'get',
-        handler: contractController.getContractsOfProfile
+        handler: contractInstance.getContractsOfProfile.bind(contractInstance)
     },
 ];

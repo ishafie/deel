@@ -1,16 +1,16 @@
+import { injectable } from "tsyringe";
 import Profile from "../../models/profile.model";
 import { ResponseManagement } from "../../models/response-management";
-import { JobService } from "../jobs/job.service";
 import { ProfileService } from "../profile/profile.service";
-
+@injectable()
 export class BalancesService {
-    constructor() {
+    constructor(private readonly profileService: ProfileService) {
     }
 
-    public async depositMoneyToUser(depositor: Profile, receiver: Profile, amount: number, profileService: ProfileService, jobService: JobService): Promise<ResponseManagement> {
+    public async depositMoneyToUser(depositor: Profile, receiver: Profile, amount: number): Promise<ResponseManagement> {
         if (amount > depositor.balance) {
             return {success: false, message: 'Not enough money in balance', statusCode: 200};
         }
-        return await profileService.deposit(depositor, receiver, amount, jobService);
+        return await this.profileService.deposit(depositor, receiver, amount);
     }
 }

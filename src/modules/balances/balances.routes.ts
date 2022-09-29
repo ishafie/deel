@@ -1,10 +1,11 @@
+import { container } from "tsyringe";
 import { BalancesController } from "./balances.controller";
 
-const balancesController = new BalancesController();
+const balanceInstance = container.resolve(BalancesController);
 export const balancesRoute = [
     {
         url: '/balances/deposit/:userId',
         method: 'post',
-        handler: balancesController.depositMoneyToUser
+        handler: balanceInstance.depositMoneyToUser.bind(balanceInstance)
     }
 ];

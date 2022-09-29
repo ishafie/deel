@@ -1,10 +1,9 @@
+import { injectable } from "tsyringe";
 import { ContractRepository } from "./contracts.repository";
-
+@injectable()
 export class ContractService {
-    private contractRepository: ContractRepository;
 
-    constructor() {
-        this.contractRepository = new ContractRepository();
+    constructor(private readonly contractRepository: ContractRepository) {
     }
 
     public async getContractById(contract_id: number) {

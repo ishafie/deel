@@ -1,8 +1,9 @@
 import { Op, WhereOptions } from "sequelize";
+import { injectable } from "tsyringe";
 import Contract, { ContractEnum } from "../../models/contract.model";
 import Job from "../../models/job.model";
 import Profile from "../../models/profile.model";
-
+@injectable()
 export class JobRepository {
     
     public async getJobById(job_id: number) {

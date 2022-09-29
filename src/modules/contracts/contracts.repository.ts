@@ -1,6 +1,8 @@
 import { Op } from "sequelize";
+import { injectable } from "tsyringe";
 import Contract, { ContractEnum } from "../../models/contract.model";
 
+@injectable()
 export class ContractRepository {
     
     public async getContractById(contract_id: number) {

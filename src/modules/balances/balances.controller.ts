@@ -1,11 +1,15 @@
 import { Response, NextFunction, Request } from "express";
+import { injectable } from "tsyringe";
 import Profile from "../../models/profile.model";
 import { ResponseManagement } from "../../models/response-management";
-import { JobService } from "../jobs/job.service";
+import { JobService } from "../jobs/jobs.service";
 import { ProfileService } from "../profile/profile.service";
 import { BalancesService } from "./balances.service";
 
+@injectable()
 export class BalancesController {
+    constructor(private readonly profileService: ProfileService, 
+        private readonly balancesService: BalancesService) {}
 
     public async depositMoneyToUser(req: Request, res: Response, next: NextFunction): Promise<any> {
         try {
@@ -18,15 +22,12 @@ export class BalancesController {
             if (!profile_id || !userId) {
                 return res.status(401).end();
             }
-            const profileService = new ProfileService();
-            const depositor: Profile = await profileService.getProfileById(profile_id);
-            const receiver: Profile = await profileService.getProfileById(userId);
+            const depositor: Profile = await this.profileService.getProfileById(profile_id);
+            const receiver: Profile = await this.profileService.getProfileById(userId);
             if (!depositor || !receiver) {
                 return res.status(401).end();
             }
-            const balancesService = new BalancesService();
-            const jobService = new JobService();
-            const transaction: ResponseManagement = await balancesService.depositMoneyToUser(depositor, receiver, amount, profileService, jobService);
+            const transaction: ResponseManagement = await this.balancesService.depositMoneyToUser(depositor, receiver, amount);
             return res.status(transaction.statusCode).send(transaction);
         } catch (err: any) {
             res.status(500).send({errors: [{message: "An unexpected error occured at BalancesController.getUnpaidBalances", detail: err }]})

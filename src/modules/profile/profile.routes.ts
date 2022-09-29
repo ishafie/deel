@@ -1,10 +1,12 @@
+import { container } from "tsyringe";
 import { ProfileController } from "./profile.controller";
 
-const profileController = new ProfileController();
+const profileInstance = container.resolve(ProfileController);
+
 export const profileRoute = [
     {
         url: '/profile/:profileId',
         method: 'get',
-        handler: profileController.getProfileById
+        handler: profileInstance.getProfileById.bind(profileInstance)
     }
 ];
