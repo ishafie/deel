@@ -30,16 +30,23 @@ export class ProfileService {
             return {success: false, message: `Your deposit can't be more than 25% the total of jobs to pay.`, statusCode: 200}
         }
         catch (error: any) {
-            console.log(error);
             return {success: false, statusCode: 500, message: `Failed to pay deposit`};
         }        
     }
 
-    public async getBestProfession(start: moment.Moment, end: moment.Moment) {
-       return await this.profileRepository.getBestProfession(start, end);
+    public async getBestProfession(start: moment.Moment, end: moment.Moment): Promise<Profile> {
+        try {
+            return await this.profileRepository.getBestProfession(start, end);
+        } catch (error: any) {
+            throw error;
+        }
     }
 
     public async getBestClients(start: moment.Moment, end: moment.Moment, limit: number) {
-        return await this.profileRepository.getBestClients(start, end, limit);
-     }
+        try {
+            return await this.profileRepository.getBestClients(start, end, limit);
+        } catch (error: any) {
+            throw error;
+        }
+    }
 }
