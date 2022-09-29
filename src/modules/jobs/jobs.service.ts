@@ -26,11 +26,15 @@ export class JobService {
             }
             if (profile.balance >= jobs[0].price) {
                 const receiver: Profile = await profileService.getProfileById(jobs[0].contract.ContractorId);
-                const paymentStatus = await profileService.pay(profile, receiver, jobs[0]);
-                return {success: true, message: `Successfully paid job ${job_id}`, statusCode: 200};
+                const paymentStatus: boolean = await profileService.pay(profile, receiver, jobs[0]);
+                if (paymentStatus) {
+                    return {success: true, message: `Successfully paid job ${job_id}`, statusCode: 200};
+                }
+                return {success: false, message: `Could not pay job ${job_id} in the database`, statusCode: 500};
             }
             return {success: false, message: `Not enough balance to pay job ${job_id}`, statusCode: 200};
         } catch (error: any) {
+            console.error(error);
             return {success: false, message: `Failed to pay job ${job_id}`, statusCode: 500};
         }
     }

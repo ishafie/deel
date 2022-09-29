@@ -17,20 +17,26 @@ export class ProfileService implements IProfileService {
         return await this.profileRepository.getProfileById(profile_id);
     }
 
-    public async pay(payor: Profile, receiver: Profile, job: Job) {
-        return await this.profileRepository.payBetweenUsers(payor, receiver, job);
+    public async pay(payor: Profile, receiver: Profile, job: Job): Promise<boolean> {
+        const result = await this.profileRepository.payBetweenUsers(payor, receiver, job);
+        return result.find((r) => r[0] !== 1) === undefined;
     }
 
     public async deposit(payor: Profile, receiver: Profile, amount: number): Promise<ResponseManagement> {
         try {
             const isBelowRequirement = await this.jobService.checkIfAmountBelowRequirement(payor, amount);
             if (isBelowRequirement) {
-                const paymentStatus = await this.profileRepository.payBetweenUsersSpecificAmount(payor, receiver, amount);
-                return {success: true, statusCode: 200, message: `You successfully deposited ${amount}$ to ${receiver.firstName} ${receiver.lastName}`};
+                const paymentResult = await this.profileRepository.payBetweenUsersSpecificAmount(payor, receiver, amount);
+                const paymentStatus = paymentResult.find((r) => r[0] !== 1) === undefined;
+                if (paymentStatus) {
+                    return {success: true, statusCode: 200, message: `You successfully deposited ${amount}$ to ${receiver.firstName} ${receiver.lastName}`};
+                }
+                return {success: false, statusCode: 500, message: `Error occured in the database while trying to pay`};
             }
             return {success: false, message: `Your deposit can't be more than 25% the total of jobs to pay.`, statusCode: 200}
         }
         catch (error: any) {
+            console.error(error);
             return {success: false, statusCode: 500, message: `Failed to pay deposit`};
         }        
     }
@@ -39,6 +45,7 @@ export class ProfileService implements IProfileService {
         try {
             return await this.profileRepository.getBestProfession(start, end);
         } catch (error: any) {
+            console.error(error);
             throw error;
         }
     }
@@ -47,6 +54,7 @@ export class ProfileService implements IProfileService {
         try {
             return await this.profileRepository.getBestClients(start, end, limit);
         } catch (error: any) {
+            console.error(error);
             throw error;
         }
     }

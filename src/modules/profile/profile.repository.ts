@@ -70,10 +70,10 @@ export class ProfileRepository implements IProfileRepository {
         }
     }
 
-    public async payBetweenUsers(payor: Profile, receiver: Profile, job: Job) {
+    public async payBetweenUsers(payor: Profile, receiver: Profile, job: Job): Promise<number[][]> {
         try {
             const result = await global.sequelize.transaction(async (t: Transaction) => {
-                await Promise.all([
+                return await Promise.all([
                     Job.update(
                         {
                             paid: true
@@ -106,10 +106,10 @@ export class ProfileRepository implements IProfileRepository {
         }
     }
 
-    public async payBetweenUsersSpecificAmount(payor: Profile, receiver: Profile, price: number) {
+    public async payBetweenUsersSpecificAmount(payor: Profile, receiver: Profile, price: number): Promise<number[][]> {
         try {
             const result = await global.sequelize.transaction(async (t: Transaction) => {
-                await Promise.all([
+                return await Promise.all([
                     Profile.update(
                         {
                             balance: receiver.balance + price

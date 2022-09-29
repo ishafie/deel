@@ -13,6 +13,7 @@ export class AdminService implements IAdminService {
       try {
          return await this.profileService.getBestProfession(start, end);
       } catch (error: any) {
+         console.error(error);
          throw error;
       }
     }
@@ -22,6 +23,7 @@ export class AdminService implements IAdminService {
         return await this.profileService.getBestClients(start, end, limit);
       }
       catch (error:any) {
+         console.error(error);
          throw error;
       }
      }
