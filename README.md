@@ -9,6 +9,8 @@ I made another branch after taking a break with the finished exercices, you can 
 
 `git pull origin finishedProject`
 
+The main branch contains all the code that I managed to do on time.
+
 I would have liked to implement a few more things like unit tests through mocha, a frontend, and also common-models (basically making models into a npm dependency so that you can install models on both the frontend and backend, this is useful when the backend & the frontend share the same objects, although obviously I wouldn't put the current Sequelize ORM models into the common models.)
 
 I would've used micro-services aswell, to separate the modules from each other, especially one for the database which should ALWAYS run on its own.
