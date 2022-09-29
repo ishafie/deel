@@ -15,6 +15,16 @@ I used Node v14 for the exercise, but you can use any higher version.
 
 Thanks a lot for taking the time to consider my application, I wish you a great day/night !
 
+# USAGE
+Works with Node v14.16.1 or higher.
+
+`git clone https://github.com/ishafie/deel.git`
+`cd deel`
+`npm i`
+`npm test`
+or
+`npm run seed`
+`npm start`
 # DOCUMENTATION AND IMPLEMENTATION CHOICES
 
 #### Using typescript
